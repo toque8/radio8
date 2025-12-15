@@ -16,7 +16,6 @@
       height: 100%;
       width: 100%;
       overflow: hidden;
-      background: #000; /* резервный чёрный фон */
     }
 
     /* Только изображение — никакого фона */
@@ -30,12 +29,6 @@
       z-index: 1;
       -webkit-user-drag: none;
       user-select: none;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    #bg.loaded {
-      opacity: 1;
     }
 
     /* Кнопки */
@@ -73,8 +66,8 @@
 </head>
 <body>
 
-  <!-- Заглушка: чёрный фон сразу -->
-  <div id="bg" src="1.jpg" alt=""></div>
+  <!-- Единственный фон — ваша картинка -->
+  <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
 
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
@@ -87,9 +80,7 @@
     
     let shuffledPlaylist = [];
     let currentIndex = 0;
-    let initialized = false;
     const audio = document.getElementById('audio');
-    const bg = document.getElementById('bg');
 
     function shuffle(arr) {
       const a = [...arr];
@@ -100,16 +91,15 @@
       return a;
     }
 
-    function ensureInitialized() {
-      if (!initialized) {
+    function ensurePlaylist() {
+      if (shuffledPlaylist.length === 0) {
         shuffledPlaylist = shuffle(tracks);
         currentIndex = 0;
-        initialized = true;
       }
     }
 
     function play() {
-      ensureInitialized();
+      ensurePlaylist();
       if (audio.src !== shuffledPlaylist[currentIndex]) {
         audio.src = shuffledPlaylist[currentIndex];
       }
@@ -130,15 +120,7 @@
       play();
     });
 
-    // Загружаем фон асинхронно
-    window.addEventListener('load', () => {
-      const img = new Image();
-      img.src = '1.jpg';
-      img.onload = () => {
-        bg.style.backgroundImage = `url('1.jpg')`;
-        bg.classList.add('loaded');
-      };
-    });
+    ensurePlaylist();
   </script>
 
 </body>
