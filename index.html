@@ -18,6 +18,7 @@
       overflow: hidden;
     }
 
+    /* Только изображение — никакого фона */
     #bg {
       position: absolute;
       top: 0;
@@ -30,18 +31,7 @@
       user-select: none;
     }
 
-    /* На мобильных — показываем кассету целиком по ширине, прижатую к верху */
-    @media (max-width: 768px) {
-      #bg {
-        width: 100vw;
-        height: auto;
-        max-height: 170vh; /* позволяет быть высоким, но не бесконечным */
-        top: 0;
-        left: 0;
-        object-fit: fill; /* отключаем cover, но на самом деле не используем */
-      }
-    }
-
+    /* Кнопки */
     .control-btn {
       position: absolute;
       background: transparent;
@@ -50,7 +40,7 @@
       margin: 0;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      z -index: 10;
+      z-index: 10;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -76,6 +66,7 @@
 </head>
 <body>
 
+  <!-- Единственный фон — ваша картинка -->
   <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
 
   <button id="play-btn" class="control-btn" onclick="play()"></button>
@@ -84,7 +75,9 @@
   <audio id="audio" preload="none"></audio>
 
   <script>
+    // 🔁 Укажите точное количество ваших треков
     const tracks = Array.from({length: 15}, (_, i) => `tracks/${i + 1}.mp3`);
+    
     let shuffledPlaylist = [];
     let currentIndex = 0;
     const audio = document.getElementById('audio');
