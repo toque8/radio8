@@ -30,22 +30,15 @@
       user-select: none;
     }
 
-    /* На мобильных — показываем кассету целиком */
+    /* На мобильных — показываем кассету целиком по ширине, прижатую к верху */
     @media (max-width: 768px) {
       #bg {
-        /* Убираем object-fit: cover */
-        width: auto;
+        width: 100vw;
         height: auto;
-        /* Масштабируем по ширине */
-        max-width: 100%;
-        /* Но ограничиваем по высоте, чтобы не вылезать */
-        max-height: 100%;
-        /* Важно: top и left остаются 0, но центрируем через margin */
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        /* object-fit больше не нужен */
-        object-fit: fill; /* fallback, но не используется */
+        max-height: 170vh; /* позволяет быть высоким, но не бесконечным */
+        top: 0;
+        left: 0;
+        object-fit: fill; /* отключаем cover, но на самом деле не используем */
       }
     }
 
@@ -57,7 +50,7 @@
       margin: 0;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      z-index: 10;
+      z -index: 10;
     }
 
     @media (hover: hover) and (pointer: fine) {
