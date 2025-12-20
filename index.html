@@ -19,23 +19,13 @@
       background: #000;
     }
 
-    #bg-container {
+    #bg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    #bg {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
+      object-fit: cover; /* ← по умолчанию — как у тебя было */
       -webkit-user-drag: none;
       user-select: none;
     }
@@ -60,9 +50,7 @@
 </head>
 <body>
 
-  <div id="bg-container">
-    <img id="bg" src="1.jpg" alt="" decoding="async">
-  </div>
+  <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
 
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
@@ -70,7 +58,13 @@
   <audio id="audio" preload="none"></audio>
 
   <script>
-    // === АУДИО-ЛОГИКА (без изменений) ===
+    // === Определяем, мобильное ли устройство ===
+    function isMobile() {
+      return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+             (window.innerWidth <= 768 && window.innerHeight >= window.innerWidth);
+    }
+
+    // === Аудио-логика (без изменений) ===
     const tracks = Array.from({length: 15}, (_, i) => `tracks/${i + 1}.mp3`);
     let shuffledPlaylist = [];
     let currentIndex = 0;
@@ -116,58 +110,64 @@
 
     ensurePlaylist();
 
-    // === ТОЧНОЕ ПОЗИЦИОНИРОВАНИЕ КНОПОК НА КАССЕТЕ ===
+    // === ПОЗИЦИОНИРОВАНИЕ КНОПОК ===
     function positionButtons() {
       const img = document.getElementById('bg');
-      const container = document.getElementById('bg-container');
       const playBtn = document.getElementById('play-btn');
       const stopBtn = document.getElementById('stop-btn');
 
-      // Ждём, пока изображение загрузится
+      // На ПК оставляем старые координаты
+      if (!isMobile()) {
+        playBtn.style.top = '70%';
+        playBtn.style.left = '50%';
+        playBtn.style.width = '75px';
+        playBtn.style.height = '28px';
+        playBtn.style.transform = 'none';
+        playBtn.style.bottom = 'auto';
+        playBtn.style.right = 'auto';
+
+        stopBtn.style.top = '70%';
+        stopBtn.style.left = '55%';
+        stopBtn.style.width = '75px';
+        stopBtn.style.height = '28px';
+        stopBtn.style.transform = 'none';
+        stopBtn.style.bottom = 'auto';
+        stopBtn.style.right = 'auto';
+        return;
+      }
+
+      // На мобильных — рассчитываем позицию
       if (!img.complete || img.naturalWidth === 0) {
         img.onload = positionButtons;
         return;
       }
 
-      // Получаем реальные размеры изображения на экране
-      const imgRect = img.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
+      const rect = img.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
 
-      // Определяем смещение контейнера (для центрирования)
-      const offsetX = imgRect.left - containerRect.left;
-      const offsetY = imgRect.top - containerRect.top;
+      // Твои оригинальные пропорции: 50%, 55%, 70%
+      const playX = width * 0.50 - 37.5;
+      const stopX = width * 0.55 - 37.5;
+      const y = height * 0.70 - 14;
 
-      const imgWidth = imgRect.width;
-      const imgHeight = imgRect.height;
-
-      // === ТВОИ ОРИГИНАЛЬНЫЕ КООРДИНАТЫ (в процентах от изображения) ===
-      // На ПК: top: 70%, left: 50% и 55% → это ~70% высоты, 50-55% ширины
-      const playXPercent = 0.50;  // 50% от ширины изображения
-      const stopXPercent = 0.55;  // 55% от ширины
-      const yPercent = 0.70;      // 70% от высоты
-
-      // Размер кнопок (фиксированный, но не слишком большой)
-      const btnWidth = 75;
-      const btnHeight = 28;
-
-      // Рассчитываем абсолютные позиции
-      const playX = offsetX + imgWidth * playXPercent - btnWidth / 2;
-      const stopX = offsetX + imgWidth * stopXPercent - btnWidth / 2;
-      const y = offsetY + imgHeight * yPercent - btnHeight / 2;
-
-      // Применяем
       playBtn.style.left = playX + 'px';
       playBtn.style.top = y + 'px';
-      playBtn.style.width = btnWidth + 'px';
-      playBtn.style.height = btnHeight + 'px';
+      playBtn.style.width = '75px';
+      playBtn.style.height = '28px';
+      playBtn.style.bottom = 'auto';
+      playBtn.style.right = 'auto';
+      playBtn.style.transform = 'none';
 
       stopBtn.style.left = stopX + 'px';
       stopBtn.style.top = y + 'px';
-      stopBtn.style.width = btnWidth + 'px';
-      stopBtn.style.height = btnHeight + 'px';
+      stopBtn.style.width = '75px';
+      stopBtn.style.height = '28px';
+      stopBtn.style.bottom = 'auto';
+      stopBtn.style.right = 'auto';
+      stopBtn.style.transform = 'none';
     }
 
-    // Запускаем при загрузке и при изменении размера
     window.addEventListener('load', positionButtons);
     window.addEventListener('resize', positionButtons);
   </script>
