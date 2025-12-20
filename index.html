@@ -18,20 +18,32 @@
       overflow: hidden;
     }
 
-    /* Только изображение — никакого фона */
-    #bg {
+    #bg-pc, #bg-mobile {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 1;
       -webkit-user-drag: none;
       user-select: none;
     }
 
-    /* Кнопки */
+    /* На ПК — показываем desktop-изображение */
+    #bg-mobile {
+      display: none;
+    }
+
+    /* На мобильных — скрываем desktop, показываем mobile */
+    @media (max-width: 768px) {
+      #bg-pc {
+        display: none;
+      }
+      #bg-mobile {
+        display: block;
+      }
+    }
+
     .control-btn {
       position: absolute;
       background: transparent;
@@ -66,8 +78,9 @@
 </head>
 <body>
 
-  <!-- Единственный фон — ваша картинка -->
-  <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
+  <!-- Два изображения: одно для ПК, одно для мобильных -->
+  <img id="bg-pc" src="1.jpg" alt="" decoding="async" loading="eager">
+  <img id="bg-mobile" src="2.jpg" alt="" decoding="async" loading="eager">
 
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
@@ -75,9 +88,7 @@
   <audio id="audio" preload="none"></audio>
 
   <script>
-    // 🔁 Укажите точное количество ваших треков
     const tracks = Array.from({length: 15}, (_, i) => `tracks/${i + 1}.mp3`);
-    
     let shuffledPlaylist = [];
     let currentIndex = 0;
     const audio = document.getElementById('audio');
