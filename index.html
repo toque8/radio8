@@ -29,12 +29,12 @@
       user-select: none;
     }
 
-    /* На ПК — показываем desktop-изображение */
+    /* ПК: показываем 1.jpg */
     #bg-mobile {
       display: none;
     }
 
-    /* На мобильных — скрываем desktop, показываем mobile */
+    /* Мобильные: показываем 2.jpg */
     @media (max-width: 768px) {
       #bg-pc {
         display: none;
@@ -61,6 +61,7 @@
       }
     }
 
+    /* === КНОПКИ ДЛЯ ПК (как у тебя было) === */
     #play-btn {
       top: 70%;
       left: 50%;
@@ -74,11 +75,27 @@
       width: 75px;
       height: 28px;
     }
+
+    /* === КНОПКИ ДЛЯ МОБИЛЬНЫХ (под 2.jpg 714x1280) === */
+    @media (max-width: 768px) {
+      #play-btn {
+        top: 67%;   /* чуть выше 70%, чтобы попасть в надписи */
+        left: 50%;
+        width: 75px;
+        height: 28px;
+      }
+
+      #stop-btn {
+        top: 67%;   /* та же высота */
+        left: 55%;
+        width: 75px;
+        height: 28px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Два изображения: одно для ПК, одно для мобильных -->
   <img id="bg-pc" src="1.jpg" alt="" decoding="async" loading="eager">
   <img id="bg-mobile" src="2.jpg" alt="" decoding="async" loading="eager">
 
