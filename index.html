@@ -19,24 +19,26 @@
       background: #000;
     }
 
-    #bg-container {
+    #bg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    #bg {
-      width: 95vw;         /* Занимает почти всю ширину */
-      max-height: 90vh;    /* Но не выходит за экран по высоте */
-      height: auto;        /* Сохраняем пропорции */
       -webkit-user-drag: none;
       user-select: none;
+    }
+
+    /* На ПК — как у тебя было */
+    #bg {
+      object-fit: cover;
+    }
+
+    /* На мобильных — кассета целиком */
+    @media (max-width: 768px) {
+      #bg {
+        object-fit: contain;
+      }
     }
 
     .control-btn {
@@ -55,13 +57,26 @@
         opacity: 0.9;
       }
     }
+
+    /* Кнопки — ОДНИ И ТЕ ЖЕ КООРДИНАТЫ для всех устройств */
+    #play-btn {
+      top: 70%;
+      left: 50%;
+      width: 75px;
+      height: 28px;
+    }
+
+    #stop-btn {
+      top: 70%;
+      left: 55%;
+      width: 75px;
+      height: 28px;
+    }
   </style>
 </head>
 <body>
 
-  <div id="bg-container">
-    <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
-  </div>
+  <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
 
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
@@ -114,64 +129,6 @@
     });
 
     ensurePlaylist();
-
-    // === Определяем, мобильное ли устройство ===
-    function isMobile() {
-      return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
-    // === Позиционирование кнопок ===
-    function positionButtons() {
-      const isMob = isMobile();
-      const playBtn = document.getElementById('play-btn');
-      const stopBtn = document.getElementById('stop-btn');
-
-      if (!isMob) {
-        // ПК: как в оригинале
-        playBtn.style.cssText = 'top:70%; left:50%; width:75px; height:28px; transform:none; bottom:auto; right:auto;';
-        stopBtn.style.cssText = 'top:70%; left:55%; width:75px; height:28px; transform:none; bottom:auto; right:auto;';
-        return;
-      }
-
-      const img = document.getElementById('bg');
-      if (!img.complete || img.naturalWidth === 0) {
-        img.onload = positionButtons;
-        return;
-      }
-
-      const rect = img.getBoundingClientRect();
-      const containerRect = document.getElementById('bg-container').getBoundingClientRect();
-
-      // Координаты изображения относительно документа
-      const imgLeft = rect.left;
-      const imgTop = rect.top;
-      const imgWidth = rect.width;
-      const imgHeight = rect.height;
-
-      // ТВОИ КООРДИНАТЫ НА КАССЕТЕ:
-      // Предполагаем, что PLAY ~50% ширины, STOP ~55%, высота ~70%
-      const playX = imgLeft + imgWidth * 0.50 - 37.5;
-      const stopX = imgLeft + imgWidth * 0.55 - 37.5;
-      const btnY = imgTop + imgHeight * 0.70 - 14;
-
-      playBtn.style.cssText = `
-        left: ${playX}px; top: ${btnY}px;
-        width: 75px; height: 28px;
-        position: absolute;
-        transform: none;
-        bottom: auto; right: auto;
-      `;
-      stopBtn.style.cssText = `
-        left: ${stopX}px; top: ${btnY}px;
-        width: 75px; height: 28px;
-        position: absolute;
-        transform: none;
-        bottom: auto; right: auto;
-      `;
-    }
-
-    window.addEventListener('load', positionButtons);
-    window.addEventListener('resize', positionButtons);
   </script>
 
 </body>
