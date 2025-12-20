@@ -25,7 +25,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover; /* ← по умолчанию — как у тебя было */
       -webkit-user-drag: none;
       user-select: none;
     }
@@ -58,7 +57,7 @@
   <audio id="audio" preload="none"></audio>
 
   <script>
-    // === Определяем, мобильное ли устройство ===
+    // === Определяем мобильное устройство ===
     function isMobile() {
       return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
              (window.innerWidth <= 768 && window.innerHeight >= window.innerWidth);
@@ -110,66 +109,83 @@
 
     ensurePlaylist();
 
-    // === ПОЗИЦИОНИРОВАНИЕ КНОПОК ===
-    function positionButtons() {
+    // === Настройка изображения и кнопок ===
+    function setupUI() {
+      const img = document.getElementById('bg');
+      const isMob = isMobile();
+
+      if (isMob) {
+        // Мобильные: кассета целиком
+        img.style.objectFit = 'contain';
+        img.style.width = 'auto';
+        img.style.height = 'auto';
+        img.style.maxWidth = '95vw';
+        img.style.maxHeight = '90vh';
+        img.style.top = '50%';
+        img.style.left = '50%';
+        img.style.transform = 'translate(-50%, -50%)';
+      } else {
+        // ПК: на весь экран, без чёрных полос
+        img.style.objectFit = 'cover';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.top = '0';
+        img.style.left = '0';
+        img.style.transform = 'none';
+      }
+
+      positionButtons(isMob);
+    }
+
+    function positionButtons(isMob) {
       const img = document.getElementById('bg');
       const playBtn = document.getElementById('play-btn');
       const stopBtn = document.getElementById('stop-btn');
 
-      // На ПК оставляем старые координаты
-      if (!isMobile()) {
-        playBtn.style.top = '70%';
-        playBtn.style.left = '50%';
-        playBtn.style.width = '75px';
-        playBtn.style.height = '28px';
-        playBtn.style.transform = 'none';
-        playBtn.style.bottom = 'auto';
-        playBtn.style.right = 'auto';
-
-        stopBtn.style.top = '70%';
-        stopBtn.style.left = '55%';
-        stopBtn.style.width = '75px';
-        stopBtn.style.height = '28px';
-        stopBtn.style.transform = 'none';
-        stopBtn.style.bottom = 'auto';
-        stopBtn.style.right = 'auto';
+      if (!isMob) {
+        // ПК: фиксированные координаты
+        playBtn.style.cssText = `
+          top: 70%; left: 50%; width: 75px; height: 28px;
+          bottom: auto; right: auto; transform: none;
+        `;
+        stopBtn.style.cssText = `
+          top: 70%; left: 55%; width: 75px; height: 28px;
+          bottom: auto; right: auto; transform: none;
+        `;
         return;
       }
 
-      // На мобильных — рассчитываем позицию
+      // Мобильные: ждём загрузки изображения
       if (!img.complete || img.naturalWidth === 0) {
-        img.onload = positionButtons;
+        img.onload = () => positionButtons(true);
         return;
       }
 
       const rect = img.getBoundingClientRect();
+      const x = rect.left + window.pageXOffset;
+      const y = rect.top + window.pageYOffset;
       const width = rect.width;
       const height = rect.height;
 
-      // Твои оригинальные пропорции: 50%, 55%, 70%
-      const playX = width * 0.50 - 37.5;
-      const stopX = width * 0.55 - 37.5;
-      const y = height * 0.70 - 14;
+      // Пропорции: 50%, 55% по ширине, 70% по высоте
+      const playX = x + width * 0.50 - 37.5;
+      const stopX = x + width * 0.55 - 37.5;
+      const btnY = y + height * 0.70 - 14;
 
-      playBtn.style.left = playX + 'px';
-      playBtn.style.top = y + 'px';
-      playBtn.style.width = '75px';
-      playBtn.style.height = '28px';
-      playBtn.style.bottom = 'auto';
-      playBtn.style.right = 'auto';
-      playBtn.style.transform = 'none';
-
-      stopBtn.style.left = stopX + 'px';
-      stopBtn.style.top = y + 'px';
-      stopBtn.style.width = '75px';
-      stopBtn.style.height = '28px';
-      stopBtn.style.bottom = 'auto';
-      stopBtn.style.right = 'auto';
-      stopBtn.style.transform = 'none';
+      playBtn.style.cssText = `
+        left: ${playX}px; top: ${btnY}px;
+        width: 75px; height: 28px;
+        bottom: auto; right: auto; transform: none;
+      `;
+      stopBtn.style.cssText = `
+        left: ${stopX}px; top: ${btnY}px;
+        width: 75px; height: 28px;
+        bottom: auto; right: auto; transform: none;
+      `;
     }
 
-    window.addEventListener('load', positionButtons);
-    window.addEventListener('resize', positionButtons);
+    window.addEventListener('load', setupUI);
+    window.addEventListener('resize', setupUI);
   </script>
 
 </body>
