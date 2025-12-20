@@ -16,8 +16,6 @@
       height: 100%;
       width: 100%;
       overflow: hidden;
-      /* Тёмно-оранжевый фон */
-      background: #a64b00; /* dark orange — тёплый и глубокий */
     }
 
     #bg {
@@ -26,19 +24,28 @@
       left: 0;
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      z-index: 1;
       -webkit-user-drag: none;
       user-select: none;
     }
 
-    /* ПК — как у тебя было */
-    #bg {
-      object-fit: cover;
-    }
-
-    /* Мобильные — кассета целиком, без искажений */
+    /* На мобильных — показываем кассету целиком */
     @media (max-width: 768px) {
       #bg {
-        object-fit: contain;
+        /* Убираем object-fit: cover */
+        width: auto;
+        height: auto;
+        /* Масштабируем по ширине */
+        max-width: 100%;
+        /* Но ограничиваем по высоте, чтобы не вылезать */
+        max-height: 100%;
+        /* Важно: top и left остаются 0, но центрируем через margin */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /* object-fit больше не нужен */
+        object-fit: fill; /* fallback, но не используется */
       }
     }
 
