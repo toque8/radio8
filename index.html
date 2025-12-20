@@ -19,23 +19,12 @@
       background: #000;
     }
 
-    /* Контейнер для изображения */
-    #bg-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
     #bg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
       -webkit-user-drag: none;
       user-select: none;
     }
@@ -60,9 +49,7 @@
 </head>
 <body>
 
-  <div id="bg-container">
-    <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
-  </div>
+  <img id="bg" src="1.jpg" alt="" decoding="async" loading="eager">
 
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
@@ -70,13 +57,13 @@
   <audio id="audio" preload="none"></audio>
 
   <script>
-    // === Мобильное устройство? ===
+    // === Определение мобильного устройства ===
     function isMobile() {
       return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
     // === Аудио-логика (без изменений) ===
-    const tracks = Array.from({length: 15}, (_, i) => `tracks/${i + 1}.mp3`);
+    const tracks = Array.from({length: 15}, (_, i) => `tracks/${i+1}.mp3`);
     let shuffledPlaylist = [];
     let currentIndex = 0;
     const audio = document.getElementById('audio');
@@ -121,37 +108,27 @@
 
     ensurePlaylist();
 
-    // === Настройка UI ===
+    // === Основная логика отображения ===
     function setupUI() {
-      const container = document.getElementById('bg-container');
       const img = document.getElementById('bg');
       const isMob = isMobile();
 
       if (!isMob) {
-        // ПК: как было
-        container.style.display = 'block';
+        // ПК: как в оригинале
+        img.style.objectFit = 'cover';
         img.style.width = '100%';
         img.style.height = '100%';
-        img.style.objectFit = 'cover';
         positionButtons(false);
         return;
       }
 
-      // Мобильные: масштабируем вручную
-      container.style.display = 'flex';
-      container.style.justifyContent = 'center';
-      container.style.alignItems = 'center';
-      container.style.overflow = 'hidden';
+      // Мобильные: кассета целиком, максимально крупно
+      img.style.objectFit = 'contain';
+      img.style.width = '100%';
+      img.style.height = '100%';
 
-      img.style.width = '100vw';
-      img.style.height = 'auto';
-      img.style.maxWidth = '100vw';
-      img.style.maxHeight = '100vh';
-      img.style.objectFit = 'none';
-      img.style.position = 'static';
-
-      // Ждём, пока размеры установятся
-      setTimeout(() => positionButtons(true), 100);
+      // Запускаем позиционирование с небольшой задержкой, чтобы браузер рассчитал размеры
+      setTimeout(() => positionButtons(true), 50);
     }
 
     function positionButtons(isMob) {
@@ -159,9 +136,9 @@
       const stopBtn = document.getElementById('stop-btn');
 
       if (!isMob) {
-        // ПК — как в оригинале
-        playBtn.style.cssText = 'top:70%; left:50%; width:75px; height:28px; bottom:auto; right:auto; transform:none;';
-        stopBtn.style.cssText = 'top:70%; left:55%; width:75px; height:28px; bottom:auto; right:auto; transform:none;';
+        // ПК — точные координаты как у тебя
+        playBtn.style.cssText = 'top:70%; left:50%; width:75px; height:28px; transform:none; bottom:auto; right:auto;';
+        stopBtn.style.cssText = 'top:70%; left:55%; width:75px; height:28px; transform:none; bottom:auto; right:auto;';
         return;
       }
 
@@ -177,7 +154,8 @@
       const width = rect.width;
       const height = rect.height;
 
-      // ТВОИ КООРДИНАТЫ: 50%, 55% по ширине, 70% по высоте
+      // ТВОИ КООРДИНАТЫ НА КАССЕТЕ:
+      // Предполагаем, что надписи PLAY/STOP находятся на 50% и 55% ширины, 70% высоты
       const playX = x + width * 0.50 - 37.5;
       const stopX = x + width * 0.55 - 37.5;
       const btnY = y + height * 0.70 - 14;
@@ -185,14 +163,16 @@
       playBtn.style.cssText = `
         left: ${playX}px; top: ${btnY}px;
         width: 75px; height: 28px;
-        bottom: auto; right: auto; transform: none;
         position: absolute;
+        transform: none;
+        bottom: auto; right: auto;
       `;
       stopBtn.style.cssText = `
         left: ${stopX}px; top: ${btnY}px;
         width: 75px; height: 28px;
-        bottom: auto; right: auto; transform: none;
         position: absolute;
+        transform: none;
+        bottom: auto; right: auto;
       `;
     }
 
