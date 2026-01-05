@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Radio8</title>
-  <link rel="icon" href="/favicon.ico?v=1" type="image/x-icon">
+  <title>Radio 8</title>
+  <link rel="icon" href="https://radio8.vercel.app/favicon.ico?v=1" type="image/x-icon">
   <style>
     * {
       margin: 0;
@@ -29,12 +29,10 @@
       user-select: none;
     }
 
-    /* ПК: показываем 1.jpg */
     #bg-mobile {
       display: none;
     }
 
-    /* Мобильные: показываем 2.jpg */
     @media (max-width: 768px) {
       #bg-pc {
         display: none;
@@ -61,7 +59,6 @@
       }
     }
 
-    /* === КНОПКИ ДЛЯ ПК (как у тебя было) === */
     #play-btn {
       top: 70%;
       left: 50%;
@@ -76,17 +73,16 @@
       height: 28px;
     }
 
-    /* === КНОПКИ ДЛЯ МОБИЛЬНЫХ (под 2.jpg 714x1280) === */
     @media (max-width: 768px) {
       #play-btn {
-        top: 63%;   /* чуть выше 70%, чтобы попасть в надписи */
+        top: 63%;
         left: 50%;
         width: 75px;
         height: 28px;
       }
 
       #stop-btn {
-        top: 63%;   /* та же высота */
+        top: 63%;
         left: 55%;
         width: 75px;
         height: 28px;
@@ -96,8 +92,8 @@
 </head>
 <body>
 
-  <img id="bg-pc" src="1.jpg" alt="" decoding="async" loading="eager">
-  <img id="bg-mobile" src="2.jpg" alt="" decoding="async" loading="eager">
+  <img id="bg-pc" src="https://radio8.vercel.app/1.jpg" alt="" decoding="async" loading="eager">
+  <img id="bg-mobile" src="https://radio8.vercel.app/2.jpg" alt="" decoding="async" loading="eager">
 
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
@@ -105,7 +101,7 @@
   <audio id="audio" preload="none"></audio>
 
   <script>
-    const tracks = Array.from({length: 15}, (_, i) => `tracks/${i + 1}.mp3`);
+    const tracks = Array.from({length: 15}, (_, i) => `https://radio8.vercel.app/tracks/${i + 1}.mp3`);
     let shuffledPlaylist = [];
     let currentIndex = 0;
     const audio = document.getElementById('audio');
@@ -153,6 +149,3 @@
 
 </body>
 </html>
-
-
-
