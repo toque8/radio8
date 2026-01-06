@@ -199,8 +199,12 @@
 
     @media (max-width: 768px) {
       #donate-sidebar {
+        top: auto;
+        bottom: 120px;
+        left: 15px;
+        right: auto;
         width: 200px;
-        right: 15px;
+        transform: none;
         padding: 12px;
       }
     }
@@ -215,7 +219,7 @@
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
   
   <button id="donate-btn" onclick="toggleDonateSidebar()">
-    <img src="https://radio8.vercel.app/cup.png" alt="" decoding="async" loading="lazy">
+    <img src="cup.png" alt="" decoding="async" loading="lazy">
   </button>
   
   <div class="donate-overlay" id="donateOverlay" onclick="toggleDonateSidebar()"></div>
