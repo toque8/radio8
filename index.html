@@ -150,7 +150,41 @@
       object-fit: contain;
     }
 
+    .next-track-btn {
+      position: absolute;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      z-index: 15;
+      opacity: 0;
+    }
+
+    #next-track-btn-desktop {
+      top: 70%;
+      left: 28%;
+      width: 20%;
+      height: 8%;
+    }
+
+    #next-track-btn-mobile {
+      display: none;
+      top: 63%;
+      left: 24%;
+      width: 28%;
+      height: 9%;
+    }
+
     @media (max-width: 768px) {
+      #next-track-btn-desktop {
+        display: none;
+      }
+      #next-track-btn-mobile {
+        display: block;
+      }
+      
       #donate-btn {
         bottom: 22px;
         right: 88px;
@@ -266,6 +300,9 @@
     <img src="https://radio8.vercel.app/copy.png" alt="" decoding="async" loading="lazy">
   </button>
   
+  <button id="next-track-btn-desktop" class="next-track-btn" onclick="nextTrack()"></button>
+  <button id="next-track-btn-mobile" class="next-track-btn" onclick="nextTrack()"></button>
+  
   <div class="donate-overlay" id="donateOverlay" onclick="toggleDonateSidebar()"></div>
   
   <div id="donate-sidebar">
@@ -317,6 +354,25 @@
       audio.pause();
       audio.currentTime = 0;
     }
+    
+    function nextTrack() {
+      if (!audio.paused) {
+        currentIndex++;
+        if (currentIndex >= shuffledPlaylist.length) {
+          shuffledPlaylist = shuffle(tracks);
+          currentIndex = 0;
+        }
+        audio.src = shuffledPlaylist[currentIndex];
+        audio.play().catch(e => {});
+        
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'next_track', {
+            'event_category': 'audio',
+            'event_label': 'Трек ' + (currentIndex + 1)
+          });
+        }
+      }
+    }
 
     audio.addEventListener('ended', () => {
       currentIndex++;
@@ -354,11 +410,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
