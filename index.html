@@ -106,7 +106,7 @@
       }
     }
 
-    #android-app-btn-desktop {
+    #android-app-btn {
       position: fixed;
       bottom: 26px;
       right: 158px;
@@ -119,22 +119,6 @@
       padding: 0;
       -webkit-tap-highlight-color: transparent;
       opacity: 0.8;
-    }
-
-    #android-app-btn-mobile {
-      display: none;
-      position: fixed;
-      bottom: 22px;
-      right: 148px;
-      width: 52px;
-      height: 52px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      z-index: 100;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      opacity: 0.78;
     }
 
     #donate-btn {
@@ -167,8 +151,7 @@
       opacity: 0.85;
     }
 
-    #android-app-btn-desktop img,
-    #android-app-btn-mobile img,
+    #android-app-btn img,
     #donate-btn img,
     #copyright-btn img {
       width: 100%;
@@ -211,8 +194,12 @@
         display: block;
       }
       
-      #android-app-btn-mobile {
-        display: block;
+      #android-app-btn {
+        bottom: 22px;
+        right: 148px;
+        width: 52px;
+        height: 52px;
+        opacity: 0.78;
       }
 
       #donate-btn {
@@ -320,22 +307,11 @@
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
   
-  <!-- Desktop APK Button -->
   <a href="https://github.com/toque8/radio8app/releases/download/v1/radio8-release.apk"
      target="_blank"
      rel="noopener noreferrer"
-     id="android-app-btn-desktop"
-     title="Скачать Radio8 для Android">
-    <img src="https://radio8.vercel.app/apk.png" alt="Download for Android" decoding="async" loading="lazy">
-  </a>
-
-  <!-- Mobile APK Button -->
-  <a href="https://github.com/toque8/radio8app/releases/download/v1/radio8-release.apk"
-     target="_blank"
-     rel="noopener noreferrer"
-     id="android-app-btn-mobile"
-     title="Скачать Radio8 для Android">
-    <img src="https://radio8.vercel.app/apk.png" alt="Download for Android" decoding="async" loading="lazy">
+     id="android-app-btn">
+    <img src="https://radio8.vercel.app/apk.png" alt="" decoding="async" loading="lazy">
   </a>
 
   <button id="donate-btn" onclick="toggleDonateSidebar()">
