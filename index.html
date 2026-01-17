@@ -106,6 +106,76 @@
       }
     }
 
+    #android-app-btn-desktop {
+      position: fixed;
+      bottom: 26px;
+      right: 158px;
+      width: 58px;
+      height: 58px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 100;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      opacity: 0.8;
+    }
+
+    #android-app-btn-mobile {
+      display: none;
+      position: fixed;
+      bottom: 22px;
+      right: 148px;
+      width: 52px;
+      height: 52px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 100;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      opacity: 0.78;
+    }
+
+    #donate-btn {
+      position: fixed;
+      bottom: 26px;
+      right: 92px;
+      width: 58px;
+      height: 58px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 100;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      opacity: 0.8;
+    }
+
+    #copyright-btn {
+      position: fixed;
+      bottom: 23px;
+      right: 32px;
+      width: 53px;
+      height: 53px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 100;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      opacity: 0.85;
+    }
+
+    #android-app-btn-desktop img,
+    #android-app-btn-mobile img,
+    #donate-btn img,
+    #copyright-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
     .next-track-btn {
       position: absolute;
       background: transparent;
@@ -139,6 +209,25 @@
       }
       #next-track-btn-mobile {
         display: block;
+      }
+      
+      #android-app-btn-mobile {
+        display: block;
+      }
+
+      #donate-btn {
+        bottom: 22px;
+        right: 88px;
+        width: 52px;
+        height: 52px;
+        opacity: 0.78;
+      }
+
+      #copyright-btn {
+        bottom: 19px;
+        right: 32px;
+        width: 47px;
+        height: 47px;
       }
     }
 
@@ -221,31 +310,6 @@
         padding: 12px;
       }
     }
-
-    @media (max-width: 768px) {
-      a[href*="radio8-release.apk"] {
-        bottom: 24px !important;
-        right: 148px !important;
-        width: 52px !important;
-        height: 52px !important;
-        opacity: 0.78 !important;
-      }
-
-      #donate-btn {
-        bottom: 22px !important;
-        right: 88px !important;
-        width: 52px !important;
-        height: 52px !important;
-        opacity: 0.78 !important;
-      }
-
-      #copyright-btn {
-        bottom: 20px !important;
-        right: 32px !important;
-        width: 47px !important;
-        height: 47px !important;
-      }
-    }
   </style>
 </head>
 <body>
@@ -256,18 +320,29 @@
   <button id="play-btn" class="control-btn" onclick="play()"></button>
   <button id="stop-btn" class="control-btn" onclick="stop()"></button>
   
+  <!-- Desktop APK Button -->
   <a href="https://github.com/toque8/radio8app/releases/download/v1/radio8-release.apk"
      target="_blank"
      rel="noopener noreferrer"
-     style="position: fixed; bottom: 28px; right: 158px; width: 58px; height: 58px; z-index: 100; opacity: 0.8; text-decoration: none; display: block;">
+     id="android-app-btn-desktop"
+     title="Скачать Radio8 для Android">
     <img src="https://radio8.vercel.app/apk.png" alt="Download for Android" decoding="async" loading="lazy">
   </a>
 
-  <button id="donate-btn" onclick="toggleDonateSidebar()" style="position: fixed; bottom: 26px; right: 92px; width: 58px; height: 58px; background: transparent; border: none; cursor: pointer; z-index: 100; padding: 0; -webkit-tap-highlight-color: transparent; opacity: 0.8;">
+  <!-- Mobile APK Button -->
+  <a href="https://github.com/toque8/radio8app/releases/download/v1/radio8-release.apk"
+     target="_blank"
+     rel="noopener noreferrer"
+     id="android-app-btn-mobile"
+     title="Скачать Radio8 для Android">
+    <img src="https://radio8.vercel.app/apk.png" alt="Download for Android" decoding="async" loading="lazy">
+  </a>
+
+  <button id="donate-btn" onclick="toggleDonateSidebar()">
     <img src="https://radio8.vercel.app/cup.png" alt="" decoding="async" loading="lazy">
   </button>
   
-  <button id="copyright-btn" onclick="window.open('https://www.toquevibe.space/', '_blank')" style="position: fixed; bottom: 23px; right: 32px; width: 53px; height: 53px; background: transparent; border: none; cursor: pointer; z-index: 100; padding: 0; -webkit-tap-highlight-color: transparent; opacity: 0.85;">
+  <button id="copyright-btn" onclick="window.open('https://www.toquevibe.space/', '_blank')">
     <img src="https://radio8.vercel.app/copy.png" alt="" decoding="async" loading="lazy">
   </button>
   
